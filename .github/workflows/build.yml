@@ -40,14 +40,7 @@ jobs:
 
     - name: Package the binary
       run: |
-        python -c "
-import zipfile
-with zipfile.ZipFile('InsideImmune-Linux.zip', 'w') as zipf:
-    zipf.write('InsideImmune')
-    zipf.write('README.md')
-    zipf.write('assets')
-    zipf.write('data')
-        "
+        zip -r InsideImmune-Linux.zip InsideImmune assets data README.md
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
