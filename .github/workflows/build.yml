@@ -37,7 +37,7 @@ jobs:
         zip -r InsideImmune-Linux.zip InsideImmune assets/ data/ README.md
 
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: InsideImmune-Linux
         path: InsideImmune-Linux.zip
