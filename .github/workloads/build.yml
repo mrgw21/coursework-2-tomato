@@ -1,0 +1,43 @@
+name: Build for Linux
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow when pushing to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger the workflow on PR to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment for the job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Checkout the repository
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Specify Python version you want
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller zip
+
+    - name: Build the project
+      run: |
+        pyinstaller --onefile --name InsideImmune --distpath . \
+          --add-data "assets:assets" --add-data "data:data" main.py
+        chmod +x InsideImmune  # Ensure the binary is executable
+
+    - name: Package the binary
+      run: |
+        zip -r InsideImmune-Linux.zip InsideImmune assets/ data/ README.md
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: InsideImmune-Linux
+        path: InsideImmune-Linux.zip
